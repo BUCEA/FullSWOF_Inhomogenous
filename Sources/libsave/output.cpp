@@ -335,7 +335,7 @@ SCALAR Output::boundaries_flux(const SCALAR &time, const TAB &flux_u, const TAB 
 
   ofstream Boundaries_flux_f(namefile_Bound_flux.c_str(), ios::app);
   //Boundaries_flux_f << time << "\t"<< setw(9) << fluxx0_cum_T  << "\t"<< setw(9)<< fluxNxcell_cum_T  <<"\t"<< setw(9) << fluxy0_cum_T << "\t"<< setw(9)<< fluxNycell_cum_T  << endl;
-  Boundaries_flux_f << time << "\t" << setw(9) << fluxx0 * DY << "\t" << setw(9) << fluxNxcell * DY << "\t" << setw(9) << fluxy0 * DX << "\t" << setw(9) << fluxNycell * DX << endl;
+  Boundaries_flux_f << time << "\t" << setw(9) << fluxx0 * DY / NYCELL << "\t" << setw(9) << fluxNxcell * DY / NYCELL << "\t" << setw(9) << fluxy0 * DX / NXCELL << "\t" << setw(9) << fluxNycell * DX / NXCELL << endl;
   Boundaries_flux_f.close();
 #endif
 
