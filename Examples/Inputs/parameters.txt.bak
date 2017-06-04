@@ -38,11 +38,11 @@ Imposed discharge in bottom  bc <bottom_imp_discharge> ::
 Imposed water height in bottom bc (if flow super critical) <bottom_imp_h>::
 
 Top Boundary condition choice (1=file 2=const_coef) <T_bc_init>:: 1
-Name of the Top boundary condition file <T_bc_NF>:: BC_B_T.txt
+Name of the Top boundary condition file <T_bc_NF>:: BC_T.txt
 
 Top Boundary condition (y = ymax)(1=imp.h 2=wall 3=neumann 4=periodic 5=imp.q)  <Tbound>:: 2
-Imposed discharge in top bc <top_imp_discharge> :: 0.0005
-Imposed water height in top bc (if flow super critical) <top_imp_h>:: 0.005
+Imposed discharge in top bc <top_imp_discharge> :: 
+Imposed water height in top bc (if flow super critical) <top_imp_h>:: 
 
 Initialization of Friction (1=file 2=const_coef) <fric_init>:: 2
 Friction law (0=No Friction 1=Manning 2=Darcy-Weisbach 3=laminar)  <fric>:: 1
