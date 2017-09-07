@@ -56,203 +56,227 @@
 
 #include "order1.hpp"
 
-Order1::Order1(Parameters & par):Scheme(par) {
-  
+Order1::Order1(Parameters &par) : Scheme(par)
+{
+
   /**
    * @details
    * @param[in] par parameter, contains all the values from the parameters file.
    */
-  
 }
 
-
-void Order1::calcul() {
+void Order1::calcul()
+{
 
   /**
    * @details Performs the first order numerical scheme.
    * @note In DEBUG mode, the programme will save four other files with boundary fluxes and volumes of water.
    * @warning order1: WARNING: the computation finished because the maximum number of time steps was reached (see MAX_ITER in misc.hpp)
    */
-  
+
   //boundary conditions
-  boundary(h,u,v,cur_time,NXCELL,NYCELL);
-  
+  boundary(h, u, v, cur_time, NXCELL, NYCELL);
+
   //initialization delz and delzc
-  for (int i=1 ; i<=NXCELL+1 ; i++){
-    for (int j=1 ; j<=NYCELL ; j++){
-      delz1[i-1][j] = z[i][j]-z[i-1][j];
+  for (int i = 1; i <= NXCELL + 1; i++)
+  {
+    for (int j = 1; j <= NYCELL; j++)
+    {
+      delz1[i - 1][j] = z[i][j] - z[i - 1][j];
     } //end for j
-  } //end for i
-  
-  for (int i=1 ; i<=NXCELL ; i++){
-    for (int j=1 ; j<=NYCELL+1 ; j++){
-      delz2[i][j-1] = z[i][j]-z[i][j-1];
+  }   //end for i
+
+  for (int i = 1; i <= NXCELL; i++)
+  {
+    for (int j = 1; j <= NYCELL + 1; j++)
+    {
+      delz2[i][j - 1] = z[i][j] - z[i][j - 1];
     } //end for j
-  } //end for i
-  
-  for (int i=1 ; i<=NXCELL ; i++){
-    for (int j=1 ; j<=NYCELL ; j++){
+  }   //end for i
+
+  for (int i = 1; i <= NXCELL; i++)
+  {
+    for (int j = 1; j <= NYCELL; j++)
+    {
       delzc2[i][j] = 0.;
       delzc1[i][j] = 0.;
     }
   }
-  
+
   time(&start);
-  
+
   //time iteration's beginning
-  while (T > cur_time  && n < MAX_ITER+1){
-    
+  while (T > cur_time && n < MAX_ITER + 1)
+  {
+
     // save the data in huz_evolution.dat
-    if (cur_time >= T_output){
-      out->write(h,u,v,z,cur_time);
-      T_output+=dt_output;
-    }// end if
+    /*if (cur_time >= T_output)
+    {
+      out->write(h, u, v, z, cur_time);
+      T_output += dt_output;
+    } // end if diaabled on-09/06/2017*/
 
     /* save specific points */
-    out_specific_points->save(h,u,v,cur_time);
-    
-    dt1=dt_max;
-    
+    out_specific_points->save(h, u, v, cur_time);
+
+    dt1 = dt_max;
+
     //boundary conditions
-    boundary(h,u,v,cur_time,NXCELL,NYCELL);
-    
-    for (int i=1 ; i<NXCELL+1 ; i++){
-      for (int j=1 ; j<NYCELL+1 ; j++){
-        if (h[i][j]<=HE_CA){
-          h[i][j]=0.;
+    boundary(h, u, v, cur_time, NXCELL, NYCELL);
+
+    for (int i = 1; i < NXCELL + 1; i++)
+    {
+      for (int j = 1; j < NYCELL + 1; j++)
+      {
+        if (h[i][j] <= HE_CA)
+        {
+          h[i][j] = 0.;
           u[i][j] = 0.;
           v[i][j] = 0.;
-          q1[i][j]=0.;
-          q2[i][j]=0.;
+          q1[i][j] = 0.;
+          q2[i][j] = 0.;
         }
-        if (fabs(u[i][j])<=VE_CA){
-          u[i][j]=0.;
-          q1[i][j]=0.;
+        if (fabs(u[i][j]) <= VE_CA)
+        {
+          u[i][j] = 0.;
+          q1[i][j] = 0.;
         }
-        if (fabs(v[i][j])<=VE_CA){
-          v[i][j]=0.;
-          q2[i][j]=0.;
+        if (fabs(v[i][j]) <= VE_CA)
+        {
+          v[i][j] = 0.;
+          q2[i][j] = 0.;
         }
       } //end for j
-    } //end for i
-    
-    for (int i=0 ; i<NXCELL+1 ; i++){
-      for (int j=1 ; j<NYCELL+1 ; j++){
+    }   //end for i
+
+    for (int i = 0; i < NXCELL + 1; i++)
+    {
+      for (int j = 1; j < NYCELL + 1; j++)
+      {
         h1r[i][j] = h[i][j];
         u1r[i][j] = u[i][j];
         v1r[i][j] = v[i][j];
-        h1l[i+1][j] = h[i+1][j];
-        u1l[i+1][j] = u[i+1][j];
-        v1l[i+1][j] = v[i+1][j];
-      }//end for j
-    }//end for i
-    
-    
-    
-    for (int i=1 ; i<NXCELL+1 ; i++){
-      for (int j=0 ; j<NYCELL+1 ; j++){
+        h1l[i + 1][j] = h[i + 1][j];
+        u1l[i + 1][j] = u[i + 1][j];
+        v1l[i + 1][j] = v[i + 1][j];
+      } //end for j
+    }   //end for i
+
+    for (int i = 1; i < NXCELL + 1; i++)
+    {
+      for (int j = 0; j < NYCELL + 1; j++)
+      {
         h2r[i][j] = h[i][j];
         u2r[i][j] = u[i][j];
         v2r[i][j] = v[i][j];
-        h2l[i][j+1] = h[i][j+1];
-        u2l[i][j+1] = u[i][j+1];
-        v2l[i][j+1] = v[i][j+1];
-      }//end for j
-    }//end for i
-    
-    maincalcflux(CFL_FIX,T, cur_time, dt_max, dt1, dt1);
-    
-    dt1=min(T-cur_time,dt1);
-    
-    tx=dt1/DX;
-    ty=dt1/DY;
-    
-    maincalcscheme(h,u,v,q1,q2,hs,us,vs,qs1,qs2,Vin_tot,cur_time,dt1,n);
-    
-    for (int i=1 ; i<NXCELL+1 ; i++){
-      for (int j=1 ; j<NYCELL+1 ; j++){
+        h2l[i][j + 1] = h[i][j + 1];
+        u2l[i][j + 1] = u[i][j + 1];
+        v2l[i][j + 1] = v[i][j + 1];
+      } //end for j
+    }   //end for i
+
+    maincalcflux(CFL_FIX, T, cur_time, dt_max, dt1, dt1);
+
+    dt1 = min(T - cur_time, dt1);
+
+    tx = dt1 / DX;
+    ty = dt1 / DY;
+
+    maincalcscheme(h, u, v, q1, q2, hs, us, vs, qs1, qs2, Vin_tot, cur_time, dt1, n);
+
+    for (int i = 1; i < NXCELL + 1; i++)
+    {
+      for (int j = 1; j < NYCELL + 1; j++)
+      {
         h[i][j] = hs[i][j];
         u[i][j] = us[i][j];
         v[i][j] = vs[i][j];
-        q1[i][j] = h[i][j]*u[i][j];
-        q2[i][j] = h[i][j]*v[i][j];
-      }//end for j
-    }//end for i
-    
+        q1[i][j] = h[i][j] * u[i][j];
+        q2[i][j] = h[i][j] * v[i][j];
+      } //end for j
+    }   //end for i
+
     /*the values of height_Vinf_tot and height_of_tot are put to zero
      to compute infiltrated and overland flow volume*/
-    height_Vinf_tot=ZERO;
-    height_of_tot=ZERO;
-    
-    for (int i=1 ; i<NXCELL+1 ; i++){
-      for (int j=1 ; j<NYCELL+1 ; j++){
-        if (h[i][j]<=HE_CA) {
-          h[i][j]= 0.;
+    height_Vinf_tot = ZERO;
+    height_of_tot = ZERO;
+
+    for (int i = 1; i < NXCELL + 1; i++)
+    {
+      for (int j = 1; j < NYCELL + 1; j++)
+      {
+        if (h[i][j] <= HE_CA)
+        {
+          h[i][j] = 0.;
           u[i][j] = 0.;
           v[i][j] = 0.;
-          q1[i][j]= 0.;
-          q2[i][j]= 0.;
+          q1[i][j] = 0.;
+          q2[i][j] = 0.;
         }
-        if (fabs(u[i][j])<=VE_CA){
-          u[i][j]= 0.;
-          q1[i][j]= 0.;
+        if (fabs(u[i][j]) <= VE_CA)
+        {
+          u[i][j] = 0.;
+          q1[i][j] = 0.;
         }
-        if (fabs(v[i][j])<=VE_CA){
-          v[i][j]= 0.;
-          q2[i][j]= 0.;
+        if (fabs(v[i][j]) <= VE_CA)
+        {
+          v[i][j] = 0.;
+          q2[i][j] = 0.;
         }
-        
-        height_Vinf_tot+= Vin_tot[i][j];
-        height_of_tot+=h[i][j];
-        
+
+        height_Vinf_tot += Vin_tot[i][j];
+        height_of_tot += h[i][j];
+
       } //end for j
-    } //end for i
-    
-    Vol_inf_tot_cumul=height_Vinf_tot*DX*DY;
-    
-    Vol_of_tot=height_of_tot*DX*DY;
-    
-    cur_time=cur_time+dt1;
-    n=n+1;
-    
+    }   //end for i
+
+    Vol_inf_tot_cumul = height_Vinf_tot * DX * DY;
+
+    Vol_of_tot = height_of_tot * DX * DY;
+
+    cur_time = cur_time + dt1;
+    n = n + 1;
+
 #ifdef DEBUG
-    out->check_vol(cur_time,dt1,Volrain_Tot,Vol_inf_tot_cumul,Vol_of_tot,Total_volume_outflow);
+    out->check_vol(cur_time, dt1, Volrain_Tot, Vol_inf_tot_cumul, Vol_of_tot, Total_volume_outflow);
 #endif
-    
+
     //Displays the percentage of elapsed time
-    cout  << '\r' << '\t' << "[" << int((cur_time/T)*100) << "%] done" ;
-    
+    cout << "The current time is " << setw(10) << cur_time << "(s)" << endl;
+    cout << '\r' << '\t' << "[" << int((cur_time / T) * 100) << "%] done"<<endl;
+
   } //end for n : loop in time
-  
+
   //Verifies the reason why the run finished
-  if (n>MAX_ITER){
+  if (n > MAX_ITER)
+  {
     cerr << "\n order1: WARNING: the computation finished because the maximum number of time steps was reached (see MAX_ITER in misc.hpp)\n";
   }
-  
+
   //Saves the last results
-  out->write(h,u,v,z,cur_time);
-  
+  out->write(h, u, v, z, cur_time);
+
   /* save the last for specific points */
-  out_specific_points->save(h,u,v,cur_time);
+  out_specific_points->save(h, u, v, cur_time);
 
   //to give the computing time
   time(&end);
-  timecomputation=difftime(end,start);
+  timecomputation = difftime(end, start);
   cpu_time = clock();
-  
+
   //to inform about the froude number
-  Fr=froude_number(hs,us,vs);
-  
+  Fr = froude_number(hs, us, vs);
+
   // The quantity of water outflow is the sum of flux at the boundary multiply by one cell area, so
   //Outflow volum = (fluxy0_cum_T+fluxNycell_cum_T+fluxx0_cum_T+fluxNxcell_cum_T)*DX*DY
   //In this case n1=1 and n2=-1 because we consider the direction of the flow
   // is from left to the right (x=0 to x=Nxcell) and from bottom to the top (y=0 to y=NYCELL)
-  out->result(timecomputation,cpu_time,Volrain_Tot,Vol_inf_tot_cumul , Vol_of_tot,Fr,n,Total_volume_outflow);
-  
+  out->result(timecomputation, cpu_time, Volrain_Tot, Vol_inf_tot_cumul, Vol_of_tot, Fr, n, Total_volume_outflow);
+
   //storage of h u v value in the final time
-  out->final(z, h, u,v);
-  
+  out->final(z, h, u, v);
 }
 
-Order1::~Order1(){
+Order1::~Order1()
+{
 }
