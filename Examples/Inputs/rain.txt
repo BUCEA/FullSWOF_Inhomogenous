@@ -1,4 +1,2 @@
-#Time(s)	Rainfall Intensity (m/s)
-0	1.94444E-05
-180	0
-
+0	5.2211e-06
+1180	0

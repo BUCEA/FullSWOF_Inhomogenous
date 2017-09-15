@@ -237,14 +237,13 @@ void Order1::calcul()
     cur_time = cur_time + dt1;
     n = n + 1;
 
-#ifdef DEBUG
+/*#ifdef DEBUG
     out->check_vol(cur_time, dt1, Volrain_Tot, Vol_inf_tot_cumul, Vol_of_tot, Total_volume_outflow);
-#endif
+#endif*/  //Disabled om 09/14/2017
 
     //Displays the percentage of elapsed time
-    cout << "The current time is " << setw(10) << cur_time << "(s)" << endl;
-    cout << '\r' << '\t' << "[" << int((cur_time / T) * 100) << "%] done"<<endl;
-
+    //cout << '\r' << '\t' << "[" << int((cur_time / T) * 100) << "%] done"<<endl;
+//Disabled on 09/07/2017--------------------------------------------------------------------
   } //end for n : loop in time
 
   //Verifies the reason why the run finished

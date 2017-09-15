@@ -55,7 +55,8 @@
 
 #include "choice_scheme.hpp"
 
-int main(int argc, char ** argv) {
+int main(int argc, char **argv)
+{
 
   /**
    * @brief Main function
@@ -64,17 +65,16 @@ int main(int argc, char ** argv) {
    * @note The name of the input file (Inputs/parameters.txt) is written here.
    */
 
-  (void) argc; //unused variable
-  (void) argv; //unused variable
+  (void)argc; //unused variable
+  (void)argv; //unused variable
 
   Parameters par;
   par.setparameters("./Inputs/parameters.txt");
-  Choice_scheme * scheme;
+  Choice_scheme *scheme;
   scheme = new Choice_scheme(par);
   cout << "scheme chosen" << endl;
   scheme->calcul();
   cout << "\nComputation finished!" << endl;
   delete scheme;
   return 0;
-
 }

@@ -409,15 +409,17 @@ void Scheme::maincalcscheme(TAB &he, TAB &ve1, TAB &ve2, TAB &qe1, TAB &qe2, TAB
   if (curtime >= T_output)
   {
     Total_volume_outflow = out->boundaries_flux(curtime, f1, g1, dt, dt_first, ORDER, verif);
-
-    cout << "The output time is" << setw(10) << T_output<< "(s)" << endl;
+    //cout << "The output time is" << setw(10) << T_output<< "(s)" << endl; //Disable 09/14/2017
     T_output += dt_output;
+    //Displays the percentage of elapsed time
+    //cout << '\r' << '\t' << "[" << int((curtime / T) * 100) << "%] done"<<endl; //Disable 09/14/2017
+    #ifdef DEBUG
+    out->boundaries_flux_LR(curtime, f1);
+    out->boundaries_flux_BT(curtime, g1);
+    #endif
   }// end if-----------Changed in 09/07/2017 and disabled the evolution output in order2 and order2.cpp
 
-#ifdef DEBUG
-  out->boundaries_flux_LR(curtime, f1);
-  out->boundaries_flux_BT(curtime, g1);
-#endif
+
 }
 
 void Scheme::boundary(TAB &h_tmp, TAB &u_tmp, TAB &v_tmp, SCALAR time_tmp, const int NODEX, const int NODEY)
