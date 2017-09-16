@@ -78,7 +78,7 @@ class Parameters{
     Parameters();
     
     /** @brief Sets the parameters */
-    void setparameters(const char *);
+    void setparameters(const char *, const char *);
     
     /** @brief Destructor */
     virtual ~Parameters();
@@ -541,6 +541,8 @@ protected :
     SCALAR dt_specific_points;
     /**Name of the input directory*/
     string path_input_directory ;
+    /**Name of the output directory*/
+    string path_output_directory;
 private:
   
     string namefile;

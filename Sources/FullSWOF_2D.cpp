@@ -65,11 +65,27 @@ int main(int argc, char **argv)
    * @note The name of the input file (Inputs/parameters.txt) is written here.
    */
 
-  (void)argc; //unused variable
-  (void)argv; //unused variable
+  //(void)argc; //unused variable---- Changed on 09/15/2017
+  //(void)argv; //unused variable---- Changed on 09/15/2017
 
+  cout << "Argument number:" << argc << endl;
+  int sum = 0;
+  cout << "No. 0 arg filepath:" << argv[0] << endl;
+  for (int i = 1; i <= argc - 1; i++)
+  {
+    cout << "No. " << i << " arg: " << argv[i] << endl;
+    sum += atoi(argv[i]);
+  }
+  cout << "sum = " << sum << endl;
+  string folder = argv[1];
+  //cout<<"folder name in C++ is: "<<folder<<endl;  //Changed on 09/15/2017
+  string para = "./" + folder + "/Inputs/parameters.txt";
+  //cout << "The parameter folder is: " << para << endl;  //Changed on 09/15/2017
+  const char *para_c = para.c_str();
+  cout<<"The char of parameters folder is: "<<para_c<<endl;
   Parameters par;
-  par.setparameters("./Inputs/parameters.txt");
+  //par.setparameters("./Inputs/parameters.txt"); //Changed on 09/15/2017
+  par.setparameters(para_c,argv[1]);
   Choice_scheme *scheme;
   scheme = new Choice_scheme(par);
   cout << "scheme chosen" << endl;
